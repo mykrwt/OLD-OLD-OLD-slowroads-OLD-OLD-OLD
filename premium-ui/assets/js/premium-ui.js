@@ -1,11 +1,73 @@
 /**
  * SLOW ROADS PREMIUM UI
  * Advanced overlay system with car/road customization and multiplayer
- * Version: 2.0.0
+ * Version: 2.1.0 - Enhanced with SVG Icons and distinct Home/Game UI
  */
 
 (function() {
   'use strict';
+
+  // ==========================================
+  // SVG ICONS LIBRARY (Lucide-style)
+  // ==========================================
+  const Icons = {
+    // Navigation & Controls
+    settings: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+    
+    users: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    
+    palette: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="0.5"/><circle cx="17.5" cy="10.5" r="0.5"/><circle cx="8.5" cy="7.5" r="0.5"/><circle cx="6.5" cy="12.5" r="0.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>`,
+    
+    menu: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
+    
+    // Close/X icon
+    x: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    
+    // Stats & Info
+    mapPin: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    
+    clock: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    
+    gauge: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12l3.5-3.5"/><circle cx="12" cy="12" r="2"/></svg>`,
+    
+    // Actions
+    check: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    
+    x: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    
+    alertTriangle: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+    
+    info: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+    
+    // Multiplayer
+    wifi: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`,
+    
+    copy: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+    
+    play: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+    
+    link: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+    
+    // Car related
+    car: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>`,
+    
+    road: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M4 15h16"/><path d="M8 5v14"/><path d="M16 5v14"/><rect x="6" y="3" width="12" height="8"/></svg>`,
+    
+    // Home specific
+    home: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    
+    gamepad: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg>`,
+    
+    // Environment
+    sun: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+    
+    moon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+    
+    // Misc
+    volume2: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`,
+    
+    zap: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`
+  };
 
   // ==========================================
   // CONFIGURATION
@@ -25,7 +87,9 @@
     ui: {
       sidebarOpen: false,
       activeTab: 'customization',
-      toastQueue: []
+      toastQueue: [],
+      isInGame: false,  // Track if player is in-game or at home screen
+      gameStarted: false
     },
     car: {
       color: '#ff0000',
@@ -178,14 +242,14 @@
       toast.className = `premium-toast ${type}`;
       
       const icons = {
-        success: '✓',
-        error: '✕',
-        warning: '⚠',
-        info: 'ℹ'
+        success: Icons.check,
+        error: Icons.x,
+        warning: Icons.alertTriangle,
+        info: Icons.info
       };
       
       toast.innerHTML = `
-        <span>${icons[type] || icons.info}</span>
+        <span class="premium-toast-icon">${icons[type] || icons.info}</span>
         <span>${message}</span>
       `;
       
@@ -591,7 +655,7 @@
       // Update player count badge
       const countBadge = document.getElementById('premium-player-count');
       if (countBadge) {
-        countBadge.innerHTML = `👥 ${State.multiplayer.peers.length + 1}`;
+        countBadge.innerHTML = `<span class="premium-player-count-icon">${Icons.users}</span> ${State.multiplayer.peers.length + 1}`;
       }
     },
     
@@ -639,7 +703,7 @@
               </div>
               
               <div class="premium-player-count" id="premium-player-count">
-                👥 1
+                <span class="premium-player-count-icon">${Icons.users}</span> 1
               </div>
             </div>
           </div>
@@ -657,14 +721,14 @@
           <!-- Mini Stats -->
           <div class="premium-ministats">
             <div class="premium-stat-item">
-              <div class="premium-stat-icon">📍</div>
+              <div class="premium-stat-icon">${Icons.mapPin}</div>
               <div class="premium-stat-info">
                 <div class="premium-stat-label">Distance</div>
                 <div class="premium-stat-value" id="premium-distance">0.0</div>
               </div>
             </div>
             <div class="premium-stat-item">
-              <div class="premium-stat-icon">⏱️</div>
+              <div class="premium-stat-icon">${Icons.clock}</div>
               <div class="premium-stat-info">
                 <div class="premium-stat-label">Time</div>
                 <div class="premium-stat-value" id="premium-time">00:00</div>
@@ -675,17 +739,17 @@
         
         <!-- Control Buttons -->
         <div class="premium-controls">
-          <button class="premium-control-btn" id="premium-btn-settings" title="Settings">⚙️</button>
-          <button class="premium-control-btn" id="premium-btn-multiplayer" title="Multiplayer">👥</button>
-          <button class="premium-control-btn" id="premium-btn-customize" title="Customize">🎨</button>
-          <button class="premium-control-btn" id="premium-btn-menu" title="Menu">☰</button>
+          <button class="premium-control-btn" id="premium-btn-settings" title="Settings">${Icons.settings}</button>
+          <button class="premium-control-btn" id="premium-btn-multiplayer" title="Multiplayer">${Icons.users}</button>
+          <button class="premium-control-btn" id="premium-btn-customize" title="Customize">${Icons.palette}</button>
+          <button class="premium-control-btn" id="premium-btn-menu" title="Menu">${Icons.menu}</button>
         </div>
         
         <!-- Sidebar -->
         <div class="premium-sidebar" id="premium-sidebar">
           <div class="premium-sidebar-header">
             <div class="premium-sidebar-title">CUSTOMIZATION</div>
-            <button class="premium-sidebar-close" id="premium-sidebar-close">×</button>
+            <button class="premium-sidebar-close" id="premium-sidebar-close">${Icons.x}</button>
           </div>
           
           <div class="premium-sidebar-content">
@@ -798,6 +862,72 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- HOME SCREEN OVERLAY -->
+        <div class="premium-home-screen" id="premium-home-screen">
+          <div class="premium-home-content">
+            <div class="premium-home-logo">
+              <div class="premium-home-logo-icon">
+                <span class="premium-home-logo-sr">SR</span>
+              </div>
+              <div class="premium-home-logo-text">
+                <h1>SLOW ROADS</h1>
+                <span class="premium-home-badge">PREMIUM</span>
+              </div>
+            </div>
+            
+            <div class="premium-home-tagline">Endless Driving Zen</div>
+            
+            <div class="premium-home-actions">
+              <button class="premium-home-btn premium-home-btn-primary" id="premium-start-btn">
+                <span class="premium-home-btn-icon">${Icons.play}</span>
+                <span>START DRIVING</span>
+              </button>
+              
+              <div class="premium-home-secondary-actions">
+                <button class="premium-home-btn premium-home-btn-secondary" id="premium-home-customize">
+                  <span class="premium-home-btn-icon">${Icons.palette}</span>
+                  <span>Customize</span>
+                </button>
+                
+                <button class="premium-home-btn premium-home-btn-secondary" id="premium-home-multiplayer">
+                  <span class="premium-home-btn-icon">${Icons.users}</span>
+                  <span>Multiplayer</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="premium-home-quick-settings">
+              <div class="premium-home-setting-row">
+                <span class="premium-home-setting-label">${Icons.car} Vehicle</span>
+                <select class="premium-home-select" id="premium-vehicle-select">
+                  <option value="car">Sports Car</option>
+                  <option value="roadster">Roadster</option>
+                  <option value="bus">Bus</option>
+                  <option value="motorcycle">Motorcycle</option>
+                </select>
+              </div>
+              
+              <div class="premium-home-setting-row">
+                <span class="premium-home-setting-label">${Icons.road} Environment</span>
+                <select class="premium-home-select" id="premium-env-select">
+                  <option value="earth">Earth</option>
+                  <option value="mars">Mars</option>
+                  <option value="moon">Moon</option>
+                  <option value="venus">Venus</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="premium-home-footer">
+            <div class="premium-home-footer-links">
+              <span>Press <kbd>SPACE</kbd> to start</span>
+              <span class="premium-home-divider">|</span>
+              <span>Press <kbd>C</kbd> for customization</span>
             </div>
           </div>
         </div>
@@ -915,6 +1045,87 @@
         const secs = (seconds % 60).toString().padStart(2, '0');
         el.textContent = `${mins}:${secs}`;
       }
+    },
+    
+    // ==========================================
+    // HOME SCREEN MANAGEMENT
+    // ==========================================
+    showHomeScreen() {
+      const homeScreen = document.getElementById('premium-home-screen');
+      const hud = document.querySelector('.premium-hud');
+      const controls = document.querySelector('.premium-controls');
+      
+      if (homeScreen) {
+        homeScreen.classList.add('premium-home-visible');
+        homeScreen.classList.remove('premium-home-hidden');
+      }
+      if (hud) hud.classList.add('premium-hud-hidden');
+      if (controls) controls.classList.add('premium-controls-hidden');
+      
+      State.ui.isInGame = false;
+      State.ui.gameStarted = false;
+      
+      Utils.log('Home screen shown');
+    },
+    
+    hideHomeScreen() {
+      const homeScreen = document.getElementById('premium-home-screen');
+      const hud = document.querySelector('.premium-hud');
+      const controls = document.querySelector('.premium-controls');
+      
+      if (homeScreen) {
+        homeScreen.classList.add('premium-home-hidden');
+        homeScreen.classList.remove('premium-home-visible');
+      }
+      if (hud) hud.classList.remove('premium-hud-hidden');
+      if (controls) controls.classList.remove('premium-controls-hidden');
+      
+      State.ui.isInGame = true;
+      State.ui.gameStarted = true;
+      
+      Utils.log('Home screen hidden - game started');
+    },
+    
+    setupHomeScreenListeners() {
+      // Start button
+      const startBtn = document.getElementById('premium-start-btn');
+      if (startBtn) {
+        startBtn.addEventListener('click', () => {
+          this.hideHomeScreen();
+          // Dispatch event to start the game
+          window.dispatchEvent(new CustomEvent('premium:startGame'));
+        });
+      }
+      
+      // Customize button on home screen
+      const homeCustomizeBtn = document.getElementById('premium-home-customize');
+      if (homeCustomizeBtn) {
+        homeCustomizeBtn.addEventListener('click', () => {
+          this.switchTab('customization');
+          this.openSidebar();
+        });
+      }
+      
+      // Multiplayer button on home screen
+      const homeMultiplayerBtn = document.getElementById('premium-home-multiplayer');
+      if (homeMultiplayerBtn) {
+        homeMultiplayerBtn.addEventListener('click', () => {
+          this.switchTab('multiplayer');
+          this.openSidebar();
+        });
+      }
+      
+      // Keyboard shortcut to show home screen (Escape when in game)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && State.ui.isInGame) {
+          // Could show pause menu here
+        }
+        if (e.code === 'Space' && !State.ui.isInGame) {
+          e.preventDefault();
+          this.hideHomeScreen();
+          window.dispatchEvent(new CustomEvent('premium:startGame'));
+        }
+      });
     }
   };
 
@@ -977,8 +1188,8 @@
       if (document.querySelector('canvas')) {
         clearInterval(checkCanvas);
         
-        console.log('%c🏎️ SLOW ROADS PREMIUM v' + CONFIG.version, 'color: #00f0ff; font-size: 20px; font-weight: bold;');
-        console.log('%c✨ Premium UI loaded successfully!', 'color: #ff00aa;');
+        console.log('%cSLOW ROADS PREMIUM v' + CONFIG.version, 'color: #00f0ff; font-size: 20px; font-weight: bold;');
+        console.log('%cPremium UI loaded successfully!', 'color: #ff00aa;');
         
         // Initialize all modules
         UIController.init();
@@ -987,10 +1198,14 @@
         P2PModule.init();
         GameBridge.init();
         
+        // Setup home screen and show it initially
+        UIController.setupHomeScreenListeners();
+        UIController.showHomeScreen();
+        
         // Welcome toast
         setTimeout(() => {
-          Toast.show('Welcome to Slow Roads Premium! Press C for customization', 'info', 5000);
-        }, 1000);
+          Toast.show('Welcome to Slow Roads Premium! Press SPACE to start driving', 'info', 5000);
+        }, 1500);
       }
     }, 100);
   }
