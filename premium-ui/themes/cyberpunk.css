@@ -1,0 +1,370 @@
+/**
+ * Cyberpunk Theme for Slow Roads Premium UI
+ * Neon-soaked aesthetic inspired by Blade Runner and Cyberpunk 2077
+ */
+
+:root {
+  /* Neon Core Colors */
+  --primary-cyan: #00f0ff;
+  --primary-magenta: #ff00aa;
+  --primary-gold: #f0e800;
+  --primary-purple: #bd00ff;
+  --primary-orange: #ff6600;
+  
+  /* Dark Theme Base - Deeper blacks */
+  --bg-dark: #050508;
+  --bg-darker: #020204;
+  --bg-card: rgba(10, 5, 20, 0.9);
+  --bg-glass: rgba(15, 10, 30, 0.7);
+  
+  /* Text Colors */
+  --text-primary: #e0f0ff;
+  --text-secondary: rgba(224, 240, 255, 0.7);
+  --text-muted: rgba(224, 240, 255, 0.4);
+  
+  /* Enhanced Glows */
+  --glow-cyan: 
+    0 0 5px rgba(0, 240, 255, 0.8),
+    0 0 20px rgba(0, 240, 255, 0.4),
+    0 0 40px rgba(0, 240, 255, 0.2);
+  --glow-magenta: 
+    0 0 5px rgba(255, 0, 170, 0.8),
+    0 0 20px rgba(255, 0, 170, 0.4),
+    0 0 40px rgba(255, 0, 170, 0.2);
+  --glow-gold: 
+    0 0 5px rgba(240, 232, 0, 0.8),
+    0 0 20px rgba(240, 232, 0, 0.4),
+    0 0 40px rgba(240, 232, 0, 0.2);
+  
+  /* Glitch Effect */
+  --glitch-cyan: #0ff;
+  --glitch-magenta: #f0f;
+}
+
+/* Cyberpunk Background Grid */
+.premium-overlay::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -1;
+}
+
+/* Animated Scanlines */
+.premium-overlay::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  animation: scanlines 8s linear infinite;
+  z-index: 9998;
+  opacity: 0.3;
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* Glitch Text Effect for Logo */
+.premium-logo-text {
+  position: relative;
+  animation: glitch 3s infinite;
+}
+
+.premium-logo-text::before,
+.premium-logo-text::after {
+  content: 'SLOW ROADS';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.premium-logo-text::before {
+  color: var(--glitch-cyan);
+  animation: glitch-1 0.3s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+
+.premium-logo-text::after {
+  color: var(--glitch-magenta);
+  animation: glitch-2 0.3s infinite linear alternate-reverse;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-2px, 2px); }
+  94% { transform: translate(2px, -2px); }
+  96% { transform: translate(-1px, 1px); }
+  98% { transform: translate(1px, -1px); }
+}
+
+@keyframes glitch-1 {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 0); }
+  40% { transform: translate(2px, 0); }
+  60% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 0); }
+  100% { transform: translate(0); }
+}
+
+@keyframes glitch-2 {
+  0% { transform: translate(0); }
+  20% { transform: translate(2px, 0); }
+  40% { transform: translate(-2px, 0); }
+  60% { transform: translate(1px, 0); }
+  80% { transform: translate(-1px, 0); }
+  100% { transform: translate(0); }
+}
+
+/* Neon Borders */
+.premium-card {
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 240, 255, 0.05),
+    0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.premium-card:hover {
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow: 
+    inset 0 0 30px rgba(0, 240, 255, 0.1),
+    0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Terminal-style Code Box */
+.premium-code-box {
+  font-family: 'Courier New', monospace;
+  background: rgba(0, 10, 20, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 
+    inset 0 0 20px rgba(0, 240, 255, 0.1),
+    0 0 10px rgba(0, 240, 255, 0.1);
+  text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+}
+
+/* Cyberpunk Buttons */
+.premium-btn-primary {
+  background: linear-gradient(135deg, #00f0ff 0%, #0080ff 100%);
+  border: 1px solid #00f0ff;
+  box-shadow: 
+    0 0 10px rgba(0, 240, 255, 0.3),
+    inset 0 0 10px rgba(255, 255, 255, 0.2);
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.premium-btn-primary:hover {
+  box-shadow: 
+    0 0 20px rgba(0, 240, 255, 0.5),
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.premium-btn-danger {
+  background: linear-gradient(135deg, #ff0066 0%, #ff0000 100%);
+  border: 1px solid #ff0066;
+  box-shadow: 
+    0 0 10px rgba(255, 0, 102, 0.3),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Speedometer Cyberpunk Style */
+.premium-speed-ring {
+  background: conic-gradient(
+    from 180deg,
+    #00f0ff 0deg,
+    #ff00aa 60deg,
+    #bd00ff 120deg,
+    #ff6600 180deg,
+    transparent 180deg
+  );
+  box-shadow: 
+    0 0 30px rgba(0, 240, 255, 0.3),
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.premium-speed-value {
+  text-shadow: 0 0 20px currentColor;
+}
+
+/* Holographic Sidebar */
+.premium-sidebar {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 5, 25, 0.95) 0%,
+    rgba(5, 5, 15, 0.98) 100%
+  );
+  border-left: 1px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 
+    -10px 0 40px rgba(0, 0, 0, 0.5),
+    inset 10px 0 40px rgba(0, 240, 255, 0.05);
+}
+
+/* Neon Toggle Switch */
+.premium-toggle-switch.active {
+  background: #00f0ff;
+  box-shadow: 
+    0 0 10px rgba(0, 240, 255, 0.5),
+    inset 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Cyberpunk Road Presets */
+.premium-road-preview.neon {
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 20px,
+      rgba(0, 240, 255, 0.1) 20px,
+      rgba(0, 240, 255, 0.1) 22px
+    ),
+    linear-gradient(180deg, #0a0a1a 0%, #000 100%);
+  animation: neon-flicker 4s infinite;
+}
+
+@keyframes neon-flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.8; }
+  94% { opacity: 1; }
+  96% { opacity: 0.9; }
+  97% { opacity: 1; }
+}
+
+/* Connection Status - More Cyberpunk */
+.premium-status-dot.online {
+  background: #00ff88;
+  box-shadow: 
+    0 0 10px #00ff88,
+    0 0 20px #00ff88,
+    0 0 30px #00ff88;
+  animation: pulse-cyber 2s infinite;
+}
+
+@keyframes pulse-cyber {
+  0%, 100% { 
+    opacity: 1;
+    box-shadow: 
+      0 0 10px #00ff88,
+      0 0 20px #00ff88,
+      0 0 30px #00ff88;
+  }
+  50% { 
+    opacity: 0.7;
+    box-shadow: 
+      0 0 5px #00ff88,
+      0 0 10px #00ff88,
+      0 0 15px #00ff88;
+  }
+}
+
+/* Section Headers - Terminal Style */
+.premium-section-title {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--primary-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.premium-section-title::after {
+  background: linear-gradient(90deg, rgba(0, 240, 255, 0.5), transparent);
+  height: 1px;
+}
+
+/* Toast Notifications - Holographic */
+.premium-toast {
+  background: rgba(10, 15, 30, 0.95);
+  border: 1px solid;
+  backdrop-filter: blur(20px);
+}
+
+.premium-toast.success {
+  border-color: #00ff88;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 136, 0.3),
+    inset 0 0 20px rgba(0, 255, 136, 0.05);
+}
+
+.premium-toast.error {
+  border-color: #ff0066;
+  box-shadow: 
+    0 0 20px rgba(255, 0, 102, 0.3),
+    inset 0 0 20px rgba(255, 0, 102, 0.05);
+}
+
+/* Tabs - Cyberpunk Style */
+.premium-tab {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+}
+
+.premium-tab.active {
+  background: rgba(0, 240, 255, 0.1);
+  text-shadow: 0 0 10px var(--primary-cyan);
+}
+
+/* Slider - Neon Track */
+.premium-slider-fill {
+  background: linear-gradient(90deg, #00f0ff, #ff00aa);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+/* Color Picker - Neon Glow */
+.premium-color-option.selected {
+  box-shadow: 
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 30px currentColor;
+}
+
+/* Player List - Holographic */
+.premium-player-item {
+  background: rgba(0, 240, 255, 0.05);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+}
+
+.premium-player-item:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+}
+
+.premium-player-avatar {
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+/* Loading Screen - Cyberpunk */
+.premium-loader {
+  background: #020204;
+}
+
+.premium-loader-logo {
+  text-shadow: 
+    0 0 10px rgba(0, 240, 255, 0.8),
+    0 0 20px rgba(0, 240, 255, 0.4),
+    0 0 40px rgba(0, 240, 255, 0.2);
+}
+
+.premium-loader-progress {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
