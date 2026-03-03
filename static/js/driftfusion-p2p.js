@@ -344,5 +344,5 @@
   window.dfBroadcast = (data) => network.broadcast(data);
   window.dfNetwork = network;
   
-  console.log('🎮 DRIFTFUSION P2P loaded');
+  console.log('DRIFTFUSION P2P loaded');
 })();

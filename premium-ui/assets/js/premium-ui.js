@@ -20,6 +20,9 @@
     
     menu: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
     
+    // Close/X icon
+    x: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    
     // Stats & Info
     mapPin: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
     
@@ -746,7 +749,7 @@
         <div class="premium-sidebar" id="premium-sidebar">
           <div class="premium-sidebar-header">
             <div class="premium-sidebar-title">CUSTOMIZATION</div>
-            <button class="premium-sidebar-close" id="premium-sidebar-close">×</button>
+            <button class="premium-sidebar-close" id="premium-sidebar-close">${Icons.x}</button>
           </div>
           
           <div class="premium-sidebar-content">
@@ -1185,8 +1188,8 @@
       if (document.querySelector('canvas')) {
         clearInterval(checkCanvas);
         
-        console.log('%c🏎️ SLOW ROADS PREMIUM v' + CONFIG.version, 'color: #00f0ff; font-size: 20px; font-weight: bold;');
-        console.log('%c✨ Premium UI loaded successfully!', 'color: #ff00aa;');
+        console.log('%cSLOW ROADS PREMIUM v' + CONFIG.version, 'color: #00f0ff; font-size: 20px; font-weight: bold;');
+        console.log('%cPremium UI loaded successfully!', 'color: #ff00aa;');
         
         // Initialize all modules
         UIController.init();
