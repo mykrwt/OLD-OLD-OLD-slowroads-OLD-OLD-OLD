@@ -19016,7 +19016,7 @@
             },
             {
               q: "How does the environment generation engine work?",
-              a: "The full write-up is still in the works (see above), but in short: a heightmap is generated with a custom algorithm similar to perlin noise, and the road's midline is traced through that heightmap using simple rules on gradient and curvature. The environment is rendered in chunks of different resolutions based on how close to the road's midline they will appear. Add in a lot of dynamic geometry management, textures, and basic vehicle physics, and you have Slow Roads.",
+              a: "The full write-up is still in the works (see above), but in short: a heightmap is generated with a custom algorithm similar to perlin noise, and the road's midline is traced through that heightmap using simple rules on gradient and curvature. The environment is rendered in chunks of different resolutions based on how close to the road's midline they will appear. Add in a lot of dynamic geometry management, textures, and basic vehicle physics, and you have Kukura.",
             },
             {
               q: "Why a JavaScript browser game, and not a conventional engine?",
@@ -19045,7 +19045,7 @@
                   "Nothing! And no ads, either... enjoy this as a respite from run-away capitalism. However, keeping the game online relies upon kind ",
                   Object(Ul.jsx)("a", {
                     className: "about-link",
-                    href: "https://ko-fi.com/slowroads",
+                    href: "https://kukura.game/support",
                     children: "donations",
                   }),
                   ", so anything you might be able to contribute would go a long way to supporting it.",
@@ -19060,7 +19060,7 @@
           Xl = [
             {
               title: "1. Project overview (tl;dr for all sections)",
-              link: "https://anslo.medium.com/slow-roads-tl-dr-a664ac6bce40",
+              link: "https://kukura.game/devlog",
             },
             {
               title:
@@ -19222,7 +19222,7 @@
                     Object(Ul.jsx)("div", { id: "splash-version", children: Ui }),
                     Object(Ul.jsxs)("a", {
                       id: "splash-anslo",
-                      href: "https://twitter.com/anslogen",
+                      href: "https://kukura.game",
                       target: "_blank",
                       rel: "noopener noreferrer",
                       children: [
@@ -19231,7 +19231,7 @@
                           id: "splash-anslo-img",
                           alt: "",
                         }),
-                        Object(Ul.jsx)("div", { children: "from anslo.dev" }),
+                        Object(Ul.jsx)("div", { children: "from kukura labs" }),
                       ],
                     }),
                     Object(Ul.jsx)("div", { id: "splash-logo-placeholder" }),
@@ -19242,7 +19242,7 @@
                     }),
                     Object(Ul.jsx)("div", {
                       id: "splash-header",
-                      children: "slow roads",
+                      children: "kukura",
                     }),
                     Object(Ul.jsx)("div", {
                       id: "splash-subheader",
@@ -19272,7 +19272,7 @@
                             }),
                             Object(Ul.jsxs)("a", {
                               id: "donate",
-                              href: "https://ko-fi.com/slowroads",
+                              href: "https://kukura.game/support",
                               target: "_blank",
                               rel: "noopener noreferrer",
                               children: [
@@ -19315,7 +19315,7 @@
                             className: "splash-about",
                             children: [
                               Object(Ul.jsx)("strong", {
-                                children: "Slow Roads",
+                                children: "Kukura",
                               }),
                               " is a casual, procedurally-generated driving game which lets you disconnect from life for a while and run endlessly toward the distant horizon. Set the scenery to suit your mood, throw on some music, and",
                               Object(Ul.jsx)("br", {}),
@@ -19372,13 +19372,13 @@
                                 "My name is ",
                                 Object(Ul.jsx)("a", {
                                   className: "about-link",
-                                  href: "https://anslo.dev",
-                                  children: "anslo",
+                                  href: "https://kukura.game",
+                                  children: "kukura labs",
                                 }),
                                 " and I'm a creative developer exploring in the space between design and computer science. With a background in software engineering and a life-long love of functional art, my projects focus on finding novel applications of digital technology in answering interesting design questions.",
                                 Object(Ul.jsx)("br", {}),
                                 Object(Ul.jsx)("br", {}),
-                                "Slow Roads exists primarily as an exploration of procedural scenery generation, but also as an experiment testing the boundaries of 3D application development within JavaScript. As a game, this project is a nostalgic love letter to the rolling hills of the Peak District, and to the arcade rally games I would play for hours on end as a child. As a technical demo, I aim to set a high bar and redress the negative idea of what can be accomplished in the browser.",
+                                "Kukura exists primarily as an exploration of procedural scenery generation, but also as an experiment testing the boundaries of 3D application development within JavaScript. As a game, this project is a nostalgic love letter to the rolling hills of the Peak District, and to the arcade rally games I would play for hours on end as a child. As a technical demo, I aim to set a high bar and redress the negative idea of what can be accomplished in the browser.",
                                 Object(Ul.jsx)("br", {}),
                                 Object(Ul.jsx)("br", {}),
                                 "Aside from this, my hope is that those in need of a simple, soothing escape will find it here.",
@@ -19401,10 +19401,10 @@
                               "After 16 months of full-time development, the initial goals for this project have been fulfilled, and so I'm considering it to be complete. That said, there are many features which didn't make the priority list for version 1. If there is interest, I would love to continue developing these features into the future.",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("br", {}),
-                              "I'm committed to keeping Slow Roads freely available and free from adverts, but I don't have the financial capacity to keep the servers running by myself. If you would like to keep the game alive, a kind ",
+                              "I'm committed to keeping Kukura freely available and free from adverts, but I don't have the financial capacity to keep the servers running by myself. If you would like to keep the game alive, a kind ",
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "https://ko-fi.com/slowroads",
+                                href: "https://kukura.game/support",
                                 target: "_blank",
                                 rel: "noopener noreferrer",
                                 children: "donation",
@@ -19448,7 +19448,7 @@
                               " to suggest new ideas. Supporters on ",
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "https://ko-fi.com/slowroads",
+                                href: "https://kukura.game/support",
                                 children: "ko-fi",
                               }),
                               " get early access and priority requests!",
@@ -19470,13 +19470,13 @@
                               "While I have no immediate plans to make the source code public, over the next few weeks I will be writing blog posts diving into each of the main components. If you're curious, please follow me on ",
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "https://twitter.com/anslogen",
+                                href: "https://kukura.game",
                                 children: "Twitter",
                               }),
                               " or ",
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "https://anslo.medium.com/",
+                                href: "https://kukura.game/devlog",
                                 children: "Medium",
                               }),
                               " to be notified of new posts.",
@@ -19525,56 +19525,56 @@
                             children: [
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.6/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.6/",
                                 children: "v1.0.0-beta.6",
                               }),
                               " - 31st March",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.7/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.7/",
                                 children: "v1.0.0-beta.7",
                               }),
                               " - 20th April",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.8/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.8/",
                                 children: "v1.0.0-beta.8",
                               }),
                               " - 10th May",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.9/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.9/",
                                 children: "v1.0.0-beta.9",
                               }),
                               " - 31st May",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.10/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.10/",
                                 children: "v1.0.0-beta.10",
                               }),
                               " - 21st July",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.11/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.11/",
                                 children: "v1.0.0-beta.11",
                               }),
                               " - 4th October",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.12/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.12/",
                                 children: "v1.0.0-beta.12",
                               }),
                               " - 12th October",
                               Object(Ul.jsx)("br", {}),
                               Object(Ul.jsx)("a", {
                                 className: "about-link",
-                                href: "http://slowroads.io/1.0.0-beta.13/",
+                                href: "https://kukura.game/legacy/1.0.0-beta.13/",
                                 children: "v1.0.0-beta.13",
                               }),
                               " - 16th October",
@@ -20728,7 +20728,7 @@
           },
           ic = () =>
             Object(Ul.jsxs)("a", {
-              href: "https://ko-fi.com/slowroads",
+              href: "https://kukura.game/support",
               target: "_blank",
               rel: "noreferrer",
               title: "Support development on Ko-fi!",
