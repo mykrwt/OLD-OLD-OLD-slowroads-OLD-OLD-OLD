@@ -7,146 +7,171 @@
   };
 
   Object.keys(defaults).forEach(function (key) {
-    if (localStorage.getItem(key) == null) localStorage.setItem(key, defaults[key]);
+    if (localStorage.getItem(key) == null) {
+      localStorage.setItem(key, defaults[key]);
+    }
   });
 
-  var channel = null;
   var playerId = 'p-' + Math.random().toString(36).slice(2, 8);
+  var channel = null;
   var teamCode = '';
   var peers = {};
-  var controls = null;
   var localState = { speed: 0, steer: 0, brake: false, ts: 0 };
+  var controls = null;
 
-  function style() {
-    if (document.getElementById('kukura-ui-style')) return;
-    var s = document.createElement('style');
-    s.id = 'kukura-ui-style';
-    s.textContent = '' +
-      '#kukura-home{position:fixed;left:50%;top:24px;transform:translateX(-50%);z-index:100000;width:min(92vw,560px);background:rgba(8,10,14,.82);color:#f7fbff;border:1px solid rgba(154,199,255,.32);border-radius:16px;padding:16px 16px 14px;font:13px/1.35 Inter,system-ui,sans-serif;box-shadow:0 14px 34px rgba(0,0,0,.45);backdrop-filter:blur(8px)}' +
-      '#kukura-home h1{margin:0;font-size:24px;letter-spacing:1px}' +
-      '#kukura-home .sub{opacity:.82;margin:2px 0 12px}' +
-      '#kukura-home .grid{display:grid;grid-template-columns:1fr auto auto;gap:8px}' +
-      '#kukura-home input{border:1px solid rgba(167,214,255,.35);border-radius:10px;background:rgba(255,255,255,.06);color:#fff;padding:10px}' +
-      '#kukura-home button{border:0;border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:600}' +
-      '#kukura-home .btn-primary{background:#4f7cff;color:white}' +
-      '#kukura-home .btn-secondary{background:#2b3444;color:#e2eeff}' +
-      '#kukura-home .meta{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}' +
-      '#kukura-home .chip{padding:6px 9px;border-radius:999px;background:rgba(154,199,255,.12);border:1px solid rgba(154,199,255,.25);font-size:11px}' +
-      '#kukura-home .peers{margin-top:8px;max-height:112px;overflow:auto;opacity:.9}' +
-      '#kukura-home .status{margin-top:8px;color:#9fddff}' +
-      '@media (max-width:640px){#kukura-home .grid{grid-template-columns:1fr 1fr}#kukura-home input{grid-column:1/-1}}';
-    document.head.appendChild(s);
+  function ensureStyle() {
+    if (document.getElementById('kukura-home-style')) return;
+    var style = document.createElement('style');
+    style.id = 'kukura-home-style';
+    style.textContent = '' +
+      '#kukura-home{position:fixed;left:20px;top:20px;z-index:100000;width:340px;background:rgba(0,0,0,.68);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:12px;font:12px/1.4 system-ui,sans-serif;backdrop-filter:blur(4px)}' +
+      '#kukura-home h2{margin:0 0 4px 0;font-size:20px;letter-spacing:.5px}' +
+      '#kukura-home .sub{opacity:.85;margin-bottom:8px}' +
+      '#kukura-home .row{display:flex;gap:6px;margin:6px 0}' +
+      '#kukura-home input{flex:1;border-radius:6px;border:1px solid rgba(255,255,255,.25);background:rgba(12,12,12,.7);color:#fff;padding:7px}' +
+      '#kukura-home button{border:0;border-radius:6px;background:#3974ff;color:#fff;padding:7px 9px;cursor:pointer}' +
+      '#kukura-home .status{margin-top:6px;color:#9fd0ff}' +
+      '#kukura-home .peerlist{margin-top:6px;max-height:120px;overflow:auto;opacity:.92}' +
+      '#kukura-home .hint{opacity:.68;font-size:11px;margin-top:6px}' +
+      '#kukura-home .solo{background:#00a36f}' +
+      '#kukura-home .danger{background:#9d2f45}' +
+      '#splash-footer,#splash-about,#splash-anslo{display:none !important}';
+    document.head.appendChild(style);
   }
 
-  function setStatus(t) { if (controls) controls.status.textContent = t; }
+  function randomCode() {
+    return Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+  }
+
+  function setStatus(text) {
+    if (controls && controls.status) controls.status.textContent = text;
+  }
 
   function renderPeers() {
-    if (!controls) return;
+    if (!controls || !controls.peerlist) return;
     var ids = Object.keys(peers);
-    controls.peers.innerHTML = ids.length
-      ? ids.map(function (id) {
-          var st = peers[id];
-          return '<div>• '+id+'  speed:'+st.speed.toFixed(1)+' steer:'+st.steer.toFixed(1)+(st.brake?' brake':'')+'</div>';
-        }).join('')
-      : 'No teammates yet. Open another tab and join the same code.';
+    if (!ids.length) {
+      controls.peerlist.textContent = 'No teammates connected yet.';
+      return;
+    }
+    controls.peerlist.innerHTML = ids.map(function (id) {
+      var st = peers[id];
+      return '<div>• ' + id + ' | speed ' + st.speed.toFixed(1) + ' | steer ' + st.steer.toFixed(1) + (st.brake ? ' | brake' : '') + '</div>';
+    }).join('');
   }
 
   function send(type, data) {
     if (!channel) return;
-    channel.postMessage({ type:type, from:playerId, code:teamCode, data:data||{} });
+    channel.postMessage({ type: type, from: playerId, code: teamCode, data: data || {} });
   }
 
-  function joinCode(code) {
-    if (!('BroadcastChannel' in window)) return setStatus('BroadcastChannel unsupported in this browser.');
+  function bindChannel(code) {
+    if (!('BroadcastChannel' in window)) {
+      setStatus('Multiplayer unavailable in this browser.');
+      return;
+    }
     if (channel) channel.close();
     peers = {};
     renderPeers();
 
     teamCode = code;
-    channel = new BroadcastChannel('kukura-team-' + code);
+    channel = new BroadcastChannel('kukura-team-' + teamCode);
     channel.onmessage = function (event) {
       var msg = event.data || {};
-      if (!msg || msg.code !== teamCode || msg.from === playerId) return;
+      if (!msg || msg.from === playerId || msg.code !== teamCode) return;
+
       if (msg.type === 'hello') {
         send('ack', { state: localState });
-      } else if (msg.type === 'ack') {
-        setStatus('Connected on team ' + teamCode);
-      } else if (msg.type === 'state') {
+        setStatus('Teammate joined: ' + msg.from);
+      }
+      if (msg.type === 'ack') {
+        setStatus('Connected to team ' + teamCode);
+      }
+      if (msg.type === 'state') {
         peers[msg.from] = msg.data || {};
         renderPeers();
       }
     };
+
     send('hello', { state: localState });
-    setStatus('Joined team ' + code + '. Share this code.');
-    if (controls) controls.team.textContent = 'Team ' + code;
+    setStatus('Joined team ' + teamCode + '. Share this code.');
   }
 
-  function createCode() {
-    return Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+  function startSolo() {
+    var beginButton = document.querySelector('#splash-container button, #splash-container .splash-reload');
+    if (beginButton) beginButton.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    setStatus('Solo mode: drive with arrow keys.');
   }
 
-  function mount() {
-    style();
-    var header = document.querySelector('#splash-header');
-    var sub = document.querySelector('#splash-subheader');
-    if (header) header.textContent = 'kukura';
-    if (sub) sub.textContent = 'new horizon remix';
+  function installHome() {
+    ensureStyle();
 
-    if (document.getElementById('kukura-home')) return true;
-    var el = document.createElement('div');
-    el.id = 'kukura-home';
-    el.innerHTML = '' +
-      '<h1>KUKURA</h1>' +
-      '<div class="sub">Clean home + simple team-code multiplayer</div>' +
-      '<div class="grid"><input id="k-code" placeholder="TEAM-CODE (e.g. AB12-CD34)"><button class="btn-primary" id="k-create">Create</button><button class="btn-secondary" id="k-join">Join</button></div>' +
-      '<div class="meta"><span class="chip" id="k-team">Solo</span><button class="btn-secondary" id="k-start">Start drive</button><button class="btn-secondary" id="k-leave">Leave team</button></div>' +
-      '<div class="status" id="k-status">Ready.</div>' +
-      '<div class="peers" id="k-peers"></div>';
-    document.body.appendChild(el);
+    var splashHeader = document.querySelector('#splash-header');
+    var splashSub = document.querySelector('#splash-subheader');
+    if (splashHeader) splashHeader.textContent = 'kukura';
+    if (splashSub) splashSub.textContent = 'remix edition';
+
+    if (document.getElementById('kukura-home')) return;
+    var box = document.createElement('div');
+    box.id = 'kukura-home';
+    box.innerHTML = '' +
+      '<h2>KUKURA</h2>' +
+      '<div class="sub">Simple team-code multiplayer</div>' +
+      '<div class="row"><input id="km-code" placeholder="TEAM-CODE" /></div>' +
+      '<div class="row"><button id="km-create">Create Team</button><button id="km-join">Join Team</button></div>' +
+      '<div class="row"><button class="solo" id="km-solo">Start Solo</button><button class="danger" id="km-leave">Leave</button></div>' +
+      '<div class="status" id="km-status">Ready. Create or join a team.</div>' +
+      '<div class="peerlist" id="km-peerlist">No teammates connected yet.</div>' +
+      '<div class="hint">Works across tabs/windows on this browser profile. Use same team code.</div>';
+
+    document.body.appendChild(box);
 
     controls = {
-      input: el.querySelector('#k-code'),
-      team: el.querySelector('#k-team'),
-      status: el.querySelector('#k-status'),
-      peers: el.querySelector('#k-peers')
+      code: box.querySelector('#km-code'),
+      status: box.querySelector('#km-status'),
+      peerlist: box.querySelector('#km-peerlist')
     };
-    renderPeers();
 
-    el.querySelector('#k-create').addEventListener('click', function () {
-      var c = createCode();
-      controls.input.value = c;
-      joinCode(c);
+    box.querySelector('#km-create').addEventListener('click', function () {
+      var code = randomCode();
+      controls.code.value = code;
+      bindChannel(code);
     });
-    el.querySelector('#k-join').addEventListener('click', function () {
-      var c = (controls.input.value || '').trim().toUpperCase();
-      if (!c) return setStatus('Enter a team code first.');
-      joinCode(c);
+
+    box.querySelector('#km-join').addEventListener('click', function () {
+      var code = (controls.code.value || '').trim().toUpperCase();
+      if (!code) {
+        setStatus('Enter a team code first.');
+        return;
+      }
+      bindChannel(code);
     });
-    el.querySelector('#k-leave').addEventListener('click', function () {
-      if (channel) channel.close();
-      channel = null;
+
+    box.querySelector('#km-leave').addEventListener('click', function () {
+      if (channel) {
+        channel.close();
+        channel = null;
+      }
       teamCode = '';
       peers = {};
-      controls.team.textContent = 'Solo';
-      setStatus('Left team.');
       renderPeers();
+      setStatus('Left team.');
     });
-    el.querySelector('#k-start').addEventListener('click', function () {
-      var begin = document.querySelector('#splash-container button, #splash-container .splash-reload');
-      if (begin) begin.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-      setStatus('Driving. Arrow keys to control.');
-    });
-    return true;
+
+    box.querySelector('#km-solo').addEventListener('click', startSolo);
   }
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowUp') localState.speed = Math.min(1, localState.speed + 0.1);
-    if (e.key === 'ArrowDown') localState.speed = Math.max(0, localState.speed - 0.1);
-    if (e.key === 'ArrowLeft') localState.steer = Math.max(-1, localState.steer - 0.1);
-    if (e.key === 'ArrowRight') localState.steer = Math.min(1, localState.steer + 0.1);
-    if (e.key === ' ') localState.brake = true;
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowUp') localState.speed = Math.min(1, localState.speed + 0.1);
+    if (event.key === 'ArrowDown') localState.speed = Math.max(0, localState.speed - 0.1);
+    if (event.key === 'ArrowLeft') localState.steer = Math.max(-1, localState.steer - 0.1);
+    if (event.key === 'ArrowRight') localState.steer = Math.min(1, localState.steer + 0.1);
+    if (event.key === ' ') localState.brake = true;
   });
-  document.addEventListener('keyup', function (e) { if (e.key === ' ') localState.brake = false; });
+
+  document.addEventListener('keyup', function (event) {
+    if (event.key === ' ') localState.brake = false;
+  });
 
   setInterval(function () {
     localState.ts = Date.now();
@@ -154,8 +179,9 @@
   }, 350);
 
   var tries = 0;
-  var timer = setInterval(function () {
+  var wait = setInterval(function () {
+    installHome();
     tries += 1;
-    if (mount() || tries > 35) clearInterval(timer);
-  }, 250);
+    if (document.getElementById('kukura-home') || tries > 30) clearInterval(wait);
+  }, 300);
 })();
