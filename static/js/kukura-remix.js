@@ -9,51 +9,38 @@
   };
 
   Object.keys(remixDefaults).forEach(function (key) {
-    if (localStorage.getItem(key) == null) {
-      localStorage.setItem(key, remixDefaults[key]);
-    }
+    localStorage.setItem(key, remixDefaults[key]);
   });
 
-  var attempts = 0;
-  var maxAttempts = 30;
-  var intervalId = null;
-
-  function applyBrandingOnce() {
-    var changed = false;
+  function applyBranding() {
     var title = document.querySelector('#splash-header');
     var sub = document.querySelector('#splash-subheader');
+    if (title) title.textContent = 'kukura';
+    if (sub) sub.textContent = 'endless driving remix';
 
-    if (title && title.textContent !== 'kukura') {
-      title.textContent = 'kukura';
-      changed = true;
-    }
+    document.querySelectorAll('a').forEach(function (link) {
+      var href = link.getAttribute('href') || '';
+      if (href.indexOf('slowroads') >= 0 || href.indexOf('anslo') >= 0) {
+        link.setAttribute('href', 'https://kukura.game');
+      }
+    });
 
-    if (sub && sub.textContent !== 'endless driving remix') {
-      sub.textContent = 'endless driving remix';
-      changed = true;
-    }
-
-    var aboutLink = document.querySelector('#splash-anslo');
-    if (aboutLink && aboutLink.getAttribute('href') !== 'https://kukura.game') {
-      aboutLink.setAttribute('href', 'https://kukura.game');
-      changed = true;
-    }
-
-    attempts += 1;
-    if ((title && sub) || attempts >= maxAttempts) {
-      clearInterval(intervalId);
-    }
-
-    return changed;
+    document.querySelectorAll('div,span,p,strong,h1,h2,h3').forEach(function (node) {
+      if (!node.childNodes || node.childNodes.length !== 1 || node.childNodes[0].nodeType !== Node.TEXT_NODE) return;
+      var txt = node.textContent;
+      if (!txt) return;
+      node.textContent = txt
+        .replace(/slow roads/gi, 'kukura')
+        .replace(/anslo\.dev/gi, 'kukura.game')
+        .replace(/anslo/gi, 'kukura labs');
+    });
   }
 
+  var observer = new MutationObserver(applyBranding);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      applyBrandingOnce();
-      intervalId = setInterval(applyBrandingOnce, 400);
-    });
+    document.addEventListener('DOMContentLoaded', applyBranding);
   } else {
-    applyBrandingOnce();
-    intervalId = setInterval(applyBrandingOnce, 400);
+    applyBranding();
   }
 })();
