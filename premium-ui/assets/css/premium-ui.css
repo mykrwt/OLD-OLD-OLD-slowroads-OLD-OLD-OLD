@@ -1,7 +1,7 @@
 /**
  * SLOW ROADS PREMIUM UI
  * A modern, glassmorphism-styled overlay system for enhanced gameplay
- * Version: 2.0.0
+ * Version: 2.1.0 - Enhanced with SVG Icons and distinct Home/Game UI
  */
 
 /* ============================================
@@ -775,6 +775,17 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
+.premium-toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.premium-toast-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
 .premium-toast.success {
   border-color: #00ff88;
   color: #00ff88;
@@ -1165,6 +1176,53 @@
     min-width: 120px;
     padding: var(--spacing-xs) var(--spacing-sm);
   }
+  
+  /* Home Screen Mobile */
+  .premium-home-logo-icon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .premium-home-logo-sr {
+    font-size: 32px;
+  }
+  
+  .premium-home-logo-text h1 {
+    font-size: 28px;
+    letter-spacing: 3px;
+  }
+  
+  .premium-home-tagline {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+  
+  .premium-home-quick-settings {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 90%;
+    max-width: 300px;
+  }
+  
+  .premium-home-btn {
+    width: 100%;
+    max-width: 240px;
+  }
+  
+  .premium-home-secondary-actions {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  
+  .premium-home-footer-links {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .premium-home-divider {
+    display: none;
+  }
 }
 
 /* ============================================
@@ -1196,4 +1254,319 @@
 
 .premium-glow-gold {
   box-shadow: var(--glow-gold);
+}
+
+/* ============================================
+   HOME SCREEN STYLES
+   ============================================ */
+.premium-home-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0.95) 0%, rgba(5, 5, 8, 0.98) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.premium-home-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.premium-home-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.premium-home-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+  animation: home-content-fade-in 0.8s ease;
+}
+
+@keyframes home-content-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Home Logo */
+.premium-home-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.premium-home-logo-icon {
+  width: 120px;
+  height: 120px;
+  background: var(--gradient-premium);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 0 60px rgba(0, 240, 255, 0.3),
+    0 0 100px rgba(255, 0, 170, 0.2);
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+
+@keyframes logo-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 60px rgba(0, 240, 255, 0.3),
+      0 0 100px rgba(255, 0, 170, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 80px rgba(0, 240, 255, 0.5),
+      0 0 120px rgba(255, 0, 170, 0.3);
+  }
+}
+
+.premium-home-logo-sr {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--bg-dark);
+  letter-spacing: 4px;
+}
+
+.premium-home-logo-text {
+  text-align: center;
+}
+
+.premium-home-logo-text h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0;
+  background: var(--gradient-premium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 6px;
+}
+
+.premium-home-badge {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--primary-gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  padding: 4px 12px;
+  border: 1px solid var(--primary-gold);
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.premium-home-tagline {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  opacity: 0.8;
+}
+
+/* Home Actions */
+.premium-home-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.premium-home-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  border: none;
+}
+
+.premium-home-btn-icon {
+  display: flex;
+  align-items: center;
+}
+
+.premium-home-btn-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.premium-home-btn-primary {
+  background: var(--gradient-premium);
+  color: var(--bg-dark);
+  min-width: 240px;
+  box-shadow: 0 4px 30px rgba(0, 240, 255, 0.3);
+}
+
+.premium-home-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 40px rgba(0, 240, 255, 0.4),
+    0 0 60px rgba(255, 0, 170, 0.2);
+}
+
+.premium-home-btn-primary:active {
+  transform: translateY(0);
+}
+
+.premium-home-secondary-actions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.premium-home-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  min-width: 140px;
+}
+
+.premium-home-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+/* Quick Settings */
+.premium-home-quick-settings {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+.premium-home-setting-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.premium-home-setting-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.premium-home-setting-label svg {
+  width: 14px;
+  height: 14px;
+}
+
+.premium-home-select {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 140px;
+  transition: all var(--transition-fast);
+}
+
+.premium-home-select:hover {
+  border-color: var(--primary-cyan);
+}
+
+.premium-home-select:focus {
+  outline: none;
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.premium-home-select option {
+  background: var(--bg-dark);
+  color: var(--text-primary);
+}
+
+/* Footer */
+.premium-home-footer {
+  position: absolute;
+  bottom: var(--spacing-xl);
+}
+
+.premium-home-footer-links {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.premium-home-divider {
+  opacity: 0.3;
+}
+
+.premium-home-footer kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   HUD & GAME MODE VISIBILITY
+   ============================================ */
+.premium-hud-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.premium-controls-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ============================================
+   PLAYER COUNT ICON
+   ============================================ */
+.premium-player-count-icon {
+  display: flex;
+  align-items: center;
+}
+
+.premium-player-count-icon svg {
+  width: 14px;
+  height: 14px;
 }
